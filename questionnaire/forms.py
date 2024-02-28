@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Response
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -19,3 +20,19 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match")
 
         return confirm_password
+    
+class RegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']
+
+
+class LoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+class ResponseForm(forms.ModelForm):
+    class Meta:
+        model = Response
+        fields = '__all__'  # Include all fields from the Response model

@@ -123,6 +123,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_REDIRECT_URL = 'main_page'
+
 try:
 	from local_settings import *
 except ImportError:

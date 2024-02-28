@@ -78,12 +78,16 @@ class Question(models.Model):
         return self.title
 
 
+class Questionnaire(models.Model):
+    title = models.CharField(max_length=100)
+
 class Response(models.Model):
     question = models.ForeignKey(
         Question, default=1, on_delete=models.DO_NOTHING
     )
     response = models.CharField(max_length=255, default=_('new response'), verbose_name=_('response'))
-
+    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
+    
     class Meta:
         verbose_name = _('response')
         verbose_name_plural = _('responses')
@@ -95,3 +99,6 @@ class Response(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
