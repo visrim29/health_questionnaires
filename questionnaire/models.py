@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -9,6 +10,7 @@ class Category(models.Model):
         on_delete=models.CASCADE, 
         verbose_name=_("owner"), 
         related_name='categories',
+        default=1,
     )
 
     class Meta:
@@ -29,6 +31,7 @@ class Questionnaires(models.Model):
         on_delete=models.CASCADE, 
         verbose_name=_("owner"), 
         related_name='questionnaires',
+        default=1,
     )
     title = models.CharField(max_length=255, default=_('new questionnaire'), verbose_name=_('questionnaire title'))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -88,3 +91,7 @@ class Response(models.Model):
 
     def __str__(self):
         return self.response
+    
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
