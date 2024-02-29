@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
 </head>
 <body>
-    <h1>Welcome to the Main Page</h1>
+    <h1>List of Questionnaires</h1>
     <ul>
-    {% for questionnaire in questionnaires %}
-        <li><a href="{% url 'complete_questionnaire' questionnaire.id %}">{{ questionnaire.title }}</a></li>
-    {% endfor %}
+        {% for questionnaire in questionnaires %}
+            <li><a href="{% url 'questionnaire_details' questionnaire.id %}">{{ questionnaire.title }}</a></li>
+        {% endfor %}
     </ul>
 </body>
 </html>

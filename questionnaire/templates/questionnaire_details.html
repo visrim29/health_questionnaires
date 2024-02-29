@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire Details</title>
+</head>
+<body>
+    <h1>{{ questionnaire.title }}</h1>
+    <form method="post" action="{% url 'submit_response' questionnaire.id %}">
+        {% csrf_token %}
+        {% for question in questions %}
+            <h2>{{ question.title }}</h2>
+            <ul>
+                {% for response in question.response_set.all %}
+                    <li>
+                        <input type="radio" id="response_{{ response.id }}" name="responses" value="{{ response.id }}">
+                        <label for="response_{{ response.id }}">{{ response.response }}</label>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
