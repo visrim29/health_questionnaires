@@ -52,9 +52,18 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 def questionnaire_details(request, questionnaire_id):
-    questionnaire = Questionnaire.objects.get(pk=questionnaire_id)
-    questions = questionnaire.question_set.all()  # Retrieve all questions for the questionnaire
-    return render(request, 'questionnaire_details.html', {'questionnaire': questionnaire, 'questions': questions})
+    questionnaire = get_object_or_404(Questionnaire, pk=questionnaire_id)
+    
+    # Retrieve all questions for the questionnaire along with their possible responses
+    questions_with_responses = []
+    for question in questionnaire.questions.all():
+        question_data = {
+            'question': question,
+            'possible_responses': question.responses.all(),  # Retrieve possible responses for the question
+        }
+        questions_with_responses.append(question_data)
+    
+    return render(request, 'questionnaire_details.html', {'questionnaire': questionnaire, 'questions_with_responses': questions_with_responses})
 
 def submit_response(request, questionnaire_id):
     if request.method == 'POST':

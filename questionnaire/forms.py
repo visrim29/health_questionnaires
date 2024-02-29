@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile, Response
+from .models import UserProfile, Response, Question
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class UserRegistrationForm(forms.ModelForm):
@@ -36,3 +36,21 @@ class ResponseForm(forms.ModelForm):
     class Meta:
         model = Response
         fields = '__all__'  # Include all fields from the Response model
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['responses'].required = False
+
+class ResponseAdminForm(forms.ModelForm):
+    class Meta:
+        model = Response
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['question'].required = False
