@@ -52,26 +52,22 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 def questionnaire_details(request, questionnaire_id):
-    questionnaire = get_object_or_404(Questionnaire, pk=questionnaire_id)
-    
-    # Retrieve all questions for the questionnaire along with their possible responses
+    questionnaire = Questionnaire.objects.get(id=questionnaire_id)
+    questions = questionnaire.questions.all()
     questions_with_responses = []
-    for question in questionnaire.questions.all():
-        question_data = {
-            'question': question,
-            'possible_responses': question.responses.all(),  # Retrieve possible responses for the question
-        }
-        questions_with_responses.append(question_data)
-    
+    for question in questions:
+        responses = question.responses.all()
+        questions_with_responses.append({'question': question, 'responses': responses})
     return render(request, 'questionnaire_details.html', {'questionnaire': questionnaire, 'questions_with_responses': questions_with_responses})
 
 def submit_response(request, questionnaire_id):
     if request.method == 'POST':
-        questionnaire = get_object_or_404(Questionnaire, pk=questionnaire_id)
-        for question in questionnaire.questions.all():
-            response_id = request.POST.get(f'responses_{question.id}')
-            if response_id:
-                response = get_object_or_404(Response, pk=response_id)
-                response.users.add(request.user)
-        return redirect('main_page')
-    return redirect('questionnaire_details', questionnaire_id=questionnaire_id)
+        questionnaire = Questionnaire.objects.get(id=questionnaire_id)
+        for item in request.POST.items():
+            if item[0].startswith('response_'):
+                question_id = item[0].split('_')[1]
+                response_id = item[1]
+                question = questionnaire.questions.get(id=question_id)
+                response = question.responses.get(id=response_id)
+                Response.objects.create(question=question, response=response)
+    return redirect('main_page')  # Redirect to home or another appropriate URL after submission

@@ -9,12 +9,12 @@
     <h1>{{ questionnaire.title }}</h1>
     <form method="post" action="{% url 'submit_response' questionnaire.id %}">
         {% csrf_token %}
-        {% for question_data in questions_with_responses %}
-            <h2>{{ question_data.question.title }}</h2>
+        {% for item in questions_with_responses %}
+            <h2>{{ item.question.title }}</h2>
             <ul>
-                {% for response in question_data.possible_responses %}
+                {% for response in item.responses %}
                     <li>
-                        <input type="radio" id="response_{{ response.id }}" name="responses" value="{{ response.id }}">
+                        <input type="radio" id="response_{{ response.id }}" name="response_{{ item.question.id }}" value="{{ response.id }}">
                         <label for="response_{{ response.id }}">{{ response.response }}</label>
                     </li>
                 {% endfor %}
