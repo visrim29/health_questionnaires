@@ -8,6 +8,7 @@ admin.site.register(models.Questionnaire)
 admin.site.register(models.Factors)
 admin.site.register(models.Question)
 admin.site.register(models.SubmittedResponse)
+admin.site.register(models.Instruction)
 
 from .models import Response
 

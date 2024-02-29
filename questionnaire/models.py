@@ -31,6 +31,20 @@ class Questionnaire(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class Instruction(models.Model):
+    title = models.CharField(max_length=255, default='new instruction', verbose_name='instruction title')
+    questionnaire = models.ForeignKey(Questionnaire, default=1, on_delete=models.DO_NOTHING)
+    instructions_text = models.CharField(max_length=5000, default='input your instructions', verbose_name='instructions text')
+
+    class Meta:
+        verbose_name = 'instruction'
+        verbose_name_plural = 'instructions'
+        ordering = ['id']
+    
+    def __str__(self):
+        return self.title
 
 
 class Factors(models.Model):
