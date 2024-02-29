@@ -75,6 +75,18 @@ class Response(models.Model):
         return self.response
 
 
+class SubmittedResponse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    response = models.ForeignKey(Response, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('submitted response')
+        verbose_name_plural = _('submitted responses')
+        ordering = ['id']
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 

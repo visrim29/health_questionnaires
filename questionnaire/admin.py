@@ -7,6 +7,7 @@ admin.site.register(models.Category)
 admin.site.register(models.Questionnaire)
 admin.site.register(models.Factors)
 admin.site.register(models.Question)
+admin.site.register(models.SubmittedResponse)
 
 from .models import Response
 

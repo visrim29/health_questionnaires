@@ -1,10 +1,6 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from . import models
-from .forms import UserRegistrationForm
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .models import UserProfile, Questionnaire, Question, Response
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from .models import Questionnaire, SubmittedResponse
 from django.contrib.auth import login
 from .forms import ResponseForm, RegistrationForm, LoginForm
 
@@ -63,11 +59,14 @@ def questionnaire_details(request, questionnaire_id):
 def submit_response(request, questionnaire_id):
     if request.method == 'POST':
         questionnaire = Questionnaire.objects.get(id=questionnaire_id)
-        for item in request.POST.items():
-            if item[0].startswith('response_'):
-                question_id = item[0].split('_')[1]
-                response_id = item[1]
-                question = questionnaire.questions.get(id=question_id)
+        for question in questionnaire.questions.all():
+            response_id = request.POST.get(f'response_{question.id}')
+            if response_id:
                 response = question.responses.get(id=response_id)
-                Response.objects.create(question=question, response=response)
-    return redirect('main_page')
+                SubmittedResponse.objects.create(
+                    user=request.user,
+                    questionnaire=questionnaire,
+                    question=question,
+                    response=response
+                )
+    return redirect('main_page')  # Redirect to home or another appropriate URL after submission
