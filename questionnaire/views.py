@@ -69,4 +69,4 @@ def submit_response(request, questionnaire_id):
                     question=question,
                     response=response
                 )
-    return redirect('main_page')  # Redirect to home or another appropriate URL after submission
+    return redirect('main_page')
