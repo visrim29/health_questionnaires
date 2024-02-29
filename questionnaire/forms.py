@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile, Response, Question
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     confirm_password = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
@@ -20,7 +21,8 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match")
 
         return confirm_password
-    
+
+
 class RegistrationForm(UserCreationForm):
     class Meta:
         model = User
@@ -32,10 +34,12 @@ class LoginForm(AuthenticationForm):
         model = User
         fields = ['username', 'password']
 
+
 class ResponseForm(forms.ModelForm):
     class Meta:
         model = Response
-        fields = '__all__'  # Include all fields from the Response model
+        fields = '__all__'
+
 
 class QuestionForm(forms.ModelForm):
     class Meta:
@@ -45,6 +49,7 @@ class QuestionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['responses'].required = False
+
 
 class ResponseAdminForm(forms.ModelForm):
     class Meta:

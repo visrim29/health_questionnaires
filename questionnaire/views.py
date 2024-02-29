@@ -70,4 +70,4 @@ def submit_response(request, questionnaire_id):
                 question = questionnaire.questions.get(id=question_id)
                 response = question.responses.get(id=response_id)
                 Response.objects.create(question=question, response=response)
-    return redirect('main_page')  # Redirect to home or another appropriate URL after submission
+    return redirect('main_page')

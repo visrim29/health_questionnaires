@@ -10,6 +10,7 @@ admin.site.register(models.Question)
 
 from .models import Response
 
+
 class ResponseAdminForm(forms.ModelForm):
     class Meta:
         model = Response
@@ -17,6 +18,7 @@ class ResponseAdminForm(forms.ModelForm):
         widgets = {
             'question': forms.widgets.Select(attrs={'required': False})
         }
+
 
 @admin.register(Response)
 class ResponseAdmin(admin.ModelAdmin):
